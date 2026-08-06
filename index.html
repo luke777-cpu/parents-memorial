@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>두 분을 기억하며</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script>
+requireFamilyAuth((member) => {
+  document.getElementById('app').innerHTML = `
+    ${navHtml('index.html')}
+    <div class="wrap">
+      <div class="hero">
+        <img class="photo" src="assets/parents.jpg" alt="부모님" onerror="this.style.display='none'">
+        <h1 class="serif">두 분을 기억하며</h1>
+        <p>${member.name}님, 오늘도 두 분을 그리워하는 마음으로.</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <p style="font-size:14px; color:var(--text-soft); margin:0 0 4px;">이 공간에서</p>
+        <p style="font-size:14px; margin:0;">생애의 기록을 남기고, 사진을 모으고,<br>서로의 그리움을 나눌 수 있습니다.</p>
+      </div>
+      <p style="text-align:center; margin-top:30px;">
+        <button class="logout" onclick="logout()">로그아웃</button>
+      </p>
+    </div>
+  `;
+});
+</script>
+</body>
+</html>
