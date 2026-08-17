@@ -33,7 +33,7 @@ function renderLoginGate(message) {
       <p class="msg" id="gate-msg">${message || ''}</p>
 
       <div id="code-block" style="display:none; margin-top:20px;">
-        <input id="code-input" type="text" inputmode="numeric" maxlength="6" placeholder="6자리 코드 입력" />
+        <input id="code-input" type="text" inputmode="numeric" maxlength="10" placeholder="인증 코드 입력" />
         <button class="btn" id="verify-code-btn" style="margin-top:8px;">인증하기</button>
       </div>
     </div>
@@ -50,7 +50,7 @@ function renderLoginGate(message) {
       document.getElementById('gate-msg').textContent = '오류가 발생했습니다. 다시 시도해주세요.';
       return;
     }
-    document.getElementById('gate-msg').textContent = '이메일로 6자리 코드를 보냈습니다. 코드를 입력해주세요.';
+    document.getElementById('gate-msg').textContent = '이메일로 인증 코드를 보냈습니다. 코드를 입력해주세요.';
     document.getElementById('code-block').style.display = 'block';
     document.getElementById('email-input').disabled = true;
     document.getElementById('send-code-btn').disabled = true;
