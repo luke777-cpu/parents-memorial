@@ -8,14 +8,19 @@ async function requireFamilyAuth(onReady) {
   }
 
   const email = session.user.email;
-  const { data: member } = await supabaseClient
+  const { data: member, error } = await supabaseClient
     .from('family_members')
     .select('*')
     .eq('email', email)
     .maybeSingle();
 
+  if (error) {
+    renderLoginGate('명단 조회 오류: ' + error.message + ' [' + email + ']');
+    return;
+  }
+
   if (!member) {
-    renderLoginGate('가족 명단에 없는 이메일입니다. 등록을 요청해주세요.');
+    renderLoginGate('가족 명단에 없는 이메일입니다: ' + email);
     await supabaseClient.auth.signOut();
     return;
   }
