@@ -16,20 +16,65 @@
 requireFamilyAuth((member) => {
   document.getElementById('app').innerHTML = `
     ${navHtml('index.html')}
-    <div class="wrap">
-      <div class="hero">
-        <img class="photo" src="assets/parents.jpg" alt="부모님" onerror="this.style.display='none'">
-        <h1 class="serif">두 분을 기억하며</h1>
-        <p>${member.name}님, 오늘도 두 분을 그리워하는 마음으로.</p>
-      </div>
-      <div class="card" style="text-align:center;">
-        <p style="font-size:14px; color:var(--text-soft); margin:0 0 4px;">이 공간에서</p>
-        <p style="font-size:14px; margin:0;">생애의 기록을 남기고, 사진을 모으고,<br>서로의 그리움을 나눌 수 있습니다.</p>
-      </div>
-      <p style="text-align:center; margin-top:30px;">
-        <button class="logout" onclick="logout()">로그아웃</button>
-      </p>
-    </div>
+
+    <main class="memorial-home">
+      <section class="album-cover">
+        <div class="cover-photo-wrap">
+          <img class="cover-photo" src="assets/parents.jpg" alt="부모님 사진" onerror="this.style.display='none'">
+        </div>
+        <div class="cover-copy">
+          <p class="eyebrow">In loving memory</p>
+          <h1 class="serif">두 분을 기억하며</h1>
+          <div class="cover-line"></div>
+          <p class="cover-quote">우리가 기억하는 한,<br>두 분은 언제나 우리 곁에 계십니다.</p>
+        </div>
+      </section>
+
+      <section class="letter-section">
+        <p class="section-kicker">기억의 첫 장</p>
+        <h2 class="serif">잊혀 가는 기억 속에서<br>다시 만나기 위하여</h2>
+        <p>
+          시간이 흐르면서 두 분에 대한 기억도 조금씩 희미해집니다.
+          목소리와 표정, 함께했던 사소한 순간들이 예전처럼 또렷하지 않을 때가 있습니다.
+        </p>
+        <p>
+          그래서 이곳에 기억을 남깁니다. 거창한 이야기가 아니라도 좋습니다.
+          오래된 사진 한 장, 자주 하시던 말씀, 함께 걸었던 길과 웃었던 날들.
+          그런 작은 기억들을 하나씩 꺼내어 오래 바라보고 싶습니다.
+        </p>
+        <p class="letter-emphasis">잊지 않기 위해서라기보다,<br>가끔 다시 두 분을 만나기 위해서.</p>
+      </section>
+
+      <section class="memory-links" aria-label="추모 공간 둘러보기">
+        <a class="memory-link" href="timeline.html">
+          <span class="memory-no">01</span>
+          <span><strong>두 분의 시간</strong><small>생애의 발자취를 따라갑니다</small></span>
+          <span class="memory-arrow">→</span>
+        </a>
+        <a class="memory-link" href="gallery.html">
+          <span class="memory-no">02</span>
+          <span><strong>사진 속의 기억</strong><small>오래된 가족사진을 다시 펼쳐봅니다</small></span>
+          <span class="memory-arrow">→</span>
+        </a>
+        <a class="memory-link" href="memories.html">
+          <span class="memory-no">03</span>
+          <span><strong>그리움의 글</strong><small>마음속에 남은 이야기를 적습니다</small></span>
+          <span class="memory-arrow">→</span>
+        </a>
+        <a class="memory-link" href="guestbook.html">
+          <span class="memory-no">04</span>
+          <span><strong>가족의 한마디</strong><small>함께 기억하고 함께 나눕니다</small></span>
+          <span class="memory-arrow">→</span>
+        </a>
+      </section>
+
+      <section class="closing-section">
+        <div class="closing-rule"></div>
+        <p class="serif closing-title">오늘도 두 분을 생각합니다.</p>
+        <p class="closing-small">${member.name}님의 가족 기록</p>
+        <button class="logout text-logout" onclick="logout()">로그아웃</button>
+      </section>
+    </main>
   `;
 });
 </script>
