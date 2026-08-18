@@ -93,11 +93,13 @@ a { color: inherit; }
 .hero h1 { font-size: 26px; margin-bottom: 10px; }
 .hero p { color: var(--text-soft); font-size: 15px; }
 .hero .photo {
-  width: 160px; height: 160px;
-  border-radius: 50%;
+  width: min(340px, 86%);
+  height: auto;
+  border-radius: 14px;
   object-fit: cover;
   margin: 0 auto 24px;
   display: block;
+  box-shadow: 0 2px 14px rgba(59,50,44,0.12);
 }
 
 /* 로그인 게이트 */
