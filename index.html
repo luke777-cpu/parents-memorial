@@ -6,6 +6,108 @@
 <title>우리 가족의 기억</title>
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  .family-home { max-width:none; padding:0 0 90px; }
+  .mother-hero {
+    position:relative;
+    min-height:calc(100vh - 54px);
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    isolation:isolate;
+    background:#eee9e1;
+  }
+  .mother-hero-bg {
+    position:absolute;
+    inset:0;
+    z-index:-3;
+    background-image:url('assets/mother-memory.svg');
+    background-size:cover;
+    background-position:center 42%;
+    filter:grayscale(1) contrast(.92) brightness(1.06);
+    transform:scale(1.015);
+  }
+  .mother-hero-overlay {
+    position:absolute;
+    inset:0;
+    z-index:-2;
+    background:
+      linear-gradient(90deg, rgba(250,247,240,.94) 0%, rgba(250,247,240,.82) 34%, rgba(250,247,240,.34) 64%, rgba(250,247,240,.12) 100%),
+      linear-gradient(0deg, rgba(246,241,233,.28), rgba(255,255,255,.03) 45%);
+  }
+  .mother-hero-content {
+    width:min(1180px, calc(100% - 56px));
+    margin:0 auto;
+    padding:90px 0 110px;
+  }
+  .mother-hero-content > * { max-width:560px; }
+  .mother-kicker {
+    margin:0 0 18px;
+    color:#77866a;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.08em;
+  }
+  .mother-hero h1 {
+    font-size:clamp(54px, 7vw, 88px);
+    line-height:1.17;
+    letter-spacing:-.06em;
+    color:#292925;
+    text-shadow:0 1px 0 rgba(255,255,255,.3);
+  }
+  .mother-lead {
+    margin:30px 0 0;
+    color:#58544e;
+    font-family:'Noto Serif KR',serif;
+    font-size:18px;
+    line-height:2;
+    word-break:keep-all;
+  }
+  .mother-actions { display:flex; gap:12px; margin-top:34px; flex-wrap:wrap; }
+  .mother-actions .family-btn { background:rgba(255,255,255,.76); backdrop-filter:blur(8px); }
+  .mother-actions .family-btn.primary { background:#6f8260; }
+  .mother-scroll {
+    position:absolute;
+    left:50%;
+    bottom:24px;
+    transform:translateX(-50%);
+    color:rgba(55,52,48,.56);
+    font-size:11px;
+    letter-spacing:.03em;
+    white-space:nowrap;
+  }
+  .mother-scroll span { display:inline-block; margin-left:7px; animation:motherDown 1.8s ease-in-out infinite; }
+  @keyframes motherDown { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+  .family-note { margin-top:72px; }
+  .family-menu-grid, .family-story, .family-footer-note { width:min(1180px, calc(100% - 56px)); }
+  .family-menu-grid { margin-left:auto; margin-right:auto; }
+  @media (max-width:760px) {
+    .family-home { padding:0 0 96px; }
+    .mother-hero { min-height:78vh; align-items:flex-end; }
+    .mother-hero-bg {
+      background-size:cover;
+      background-position:62% center;
+      filter:grayscale(1) contrast(.9) brightness(1.08);
+    }
+    .mother-hero-overlay {
+      background:
+        linear-gradient(0deg, rgba(249,246,239,.97) 0%, rgba(249,246,239,.83) 38%, rgba(249,246,239,.30) 70%, rgba(249,246,239,.08) 100%);
+    }
+    .mother-hero-content {
+      width:calc(100% - 36px);
+      padding:60px 0 78px;
+    }
+    .mother-hero-content > * { max-width:100%; }
+    .mother-kicker { font-size:12px; margin-bottom:10px; }
+    .mother-hero h1 { font-size:clamp(42px, 13vw, 58px); }
+    .mother-lead { margin-top:18px; font-size:15px; line-height:1.85; }
+    .mother-actions { margin-top:24px; flex-direction:row; }
+    .mother-actions .family-btn { width:auto; flex:1; min-width:135px; padding:0 14px; }
+    .mother-scroll { display:none; }
+    .family-note { margin:44px 16px 50px; }
+    .family-menu-grid, .family-story, .family-footer-note { width:auto; margin-left:16px; margin-right:16px; }
+  }
+</style>
 </head>
 <body class="home-bright">
 <div id="app"></div>
