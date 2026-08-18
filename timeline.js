@@ -31,7 +31,11 @@ async function loadTimeline() {
     .order('year', { ascending: true });
 
   const list = document.getElementById('tl-list');
-  if (error || !data || data.length === 0) {
+  if (error) {
+    list.innerHTML = '<p class="empty">오류: ' + escapeHtml(error.message) + '</p>';
+    return;
+  }
+  if (!data || data.length === 0) {
     list.innerHTML = '<p class="empty">아직 기록이 없습니다. 첫 기록을 남겨보세요.</p>';
     return;
   }

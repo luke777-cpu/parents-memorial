@@ -29,7 +29,11 @@ async function loadMemories() {
     .order('created_at', { ascending: false });
 
   const list = document.getElementById('mm-list');
-  if (error || !data || data.length === 0) {
+  if (error) {
+    list.innerHTML = '<p class="empty">오류: ' + escapeHtml(error.message) + '</p>';
+    return;
+  }
+  if (!data || data.length === 0) {
     list.innerHTML = '<p class="empty">아직 남겨진 글이 없습니다.</p>';
     return;
   }
