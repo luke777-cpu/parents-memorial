@@ -28,50 +28,47 @@ async function requireFamilyAuth(onReady) {
   onReady(member);
 }
 
+const FAMILY_ACCOUNTS = [
+  { label: '큰누나',   email: 'keunnuna@bumo.family' },
+  { label: '둘째 누나', email: 'duljjae@bumo.family' },
+  { label: '막내 누나', email: 'maknae@bumo.family' },
+  { label: '남동생',   email: 'namdongsaeng@bumo.family' },
+  { label: '본인',     email: 'bonin@bumo.family' },
+];
+
 function renderLoginGate(message) {
+  const options = FAMILY_ACCOUNTS.map((a, i) => `<option value="${i}">${a.label}</option>`).join('');
   document.getElementById('app').innerHTML = `
     <div class="gate">
       <h1 class="serif" style="font-size:20px; margin-bottom:8px;">${SITE_TITLE}</h1>
       <p style="color:var(--text-soft); font-size:14px;">가족만 볼 수 있는 공간입니다.</p>
-      <input id="email-input" type="email" placeholder="이메일 주소" />
-      <button class="btn" id="send-code-btn">인증 코드 받기</button>
+      <select id="name-select" style="width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px; background:var(--card); font-size:16px; margin:20px 0 10px;">
+        <option value="" disabled selected>이름을 선택하세요</option>
+        ${options}
+      </select>
+      <input id="pw-input" type="password" placeholder="비밀번호" style="font-size:16px;" />
+      <button class="btn" id="login-btn">들어가기</button>
       <p class="msg" id="gate-msg">${message || ''}</p>
-
-      <div id="code-block" style="display:none; margin-top:20px;">
-        <input id="code-input" type="text" inputmode="numeric" maxlength="10" placeholder="인증 코드 입력" />
-        <button class="btn" id="verify-code-btn" style="margin-top:8px;">인증하기</button>
-      </div>
     </div>
   `;
+  document.getElementById('login-btn').addEventListener('click', async () => {
+    const idx = document.getElementById('name-select').value;
+    const pw = document.getElementById('pw-input').value;
+    const msgEl = document.getElementById('gate-msg');
+    if (idx === '' || !pw) { msgEl.textContent = '이름과 비밀번호를 입력해주세요.'; return; }
+    const acc = FAMILY_ACCOUNTS[Number(idx)];
 
-  let pendingEmail = '';
-
-  document.getElementById('send-code-btn').addEventListener('click', async () => {
-    const email = document.getElementById('email-input').value.trim();
-    if (!email) return;
-    pendingEmail = email;
-    const { error } = await supabaseClient.auth.signInWithOtp({ email });
+    let { error } = await supabaseClient.auth.signInWithPassword({ email: acc.email, password: pw });
     if (error) {
-      document.getElementById('gate-msg').textContent = '오류가 발생했습니다. 다시 시도해주세요.';
-      return;
-    }
-    document.getElementById('gate-msg').textContent = '이메일로 인증 코드를 보냈습니다. 코드를 입력해주세요.';
-    document.getElementById('code-block').style.display = 'block';
-    document.getElementById('email-input').disabled = true;
-    document.getElementById('send-code-btn').disabled = true;
-  });
-
-  document.getElementById('verify-code-btn').addEventListener('click', async () => {
-    const code = document.getElementById('code-input').value.trim();
-    if (!code || !pendingEmail) return;
-    const { error } = await supabaseClient.auth.verifyOtp({
-      email: pendingEmail,
-      token: code,
-      type: 'email'
-    });
-    if (error) {
-      document.getElementById('gate-msg').textContent = '코드가 올바르지 않거나 만료되었습니다. 다시 시도해주세요.';
-      return;
+      if ((error.message || '').toLowerCase().includes('invalid login credentials')) {
+        // 첫 로그인이면 계정 자동 생성
+        const { data: su, error: e2 } = await supabaseClient.auth.signUp({ email: acc.email, password: pw });
+        if (e2) { msgEl.textContent = '비밀번호가 올바르지 않습니다.'; return; }
+        if (!su || !su.session) { msgEl.textContent = '관리자 설정이 필요합니다 (이메일 확인 끄기).'; return; }
+      } else {
+        msgEl.textContent = '로그인 실패: ' + error.message;
+        return;
+      }
     }
     window.location.reload();
   });
