@@ -18,19 +18,19 @@ requireFamilyAuth((member) => {
     ${navHtml('index.html')}
 
     <main class="family-home">
-      <section class="family-hero">
-        <div class="family-hero-photo">
-          <img src="assets/mother-memory.svg" alt="어머니 사진" onerror="this.style.display='none'">
-        </div>
-        <div class="family-hero-copy">
-          <p class="family-kicker">우리 가족의 오래된 사진첩</p>
-          <h1 class="serif">함께여서<br>좋았던 날들</h1>
-          <p class="family-lead">두 분이 함께 걸었던 길, 여행했던 곳, 웃었던 순간을<br>천천히 다시 꺼내보는 공간입니다.</p>
-          <div class="family-actions">
+      <section class="mother-hero">
+        <div class="mother-hero-bg" aria-hidden="true"></div>
+        <div class="mother-hero-overlay" aria-hidden="true"></div>
+        <div class="mother-hero-content">
+          <p class="mother-kicker">우리 가족의 오래된 사진첩</p>
+          <h1 class="serif">어머니를<br>기억하며</h1>
+          <p class="mother-lead">사진을 펼치면<br>그날의 목소리와 표정이 다시 떠오릅니다.</p>
+          <div class="mother-actions">
             <a href="gallery.html" class="family-btn primary">사진 보러가기</a>
-            <a href="timeline.html" class="family-btn">두 분의 시간 보기</a>
+            <a href="memories.html" class="family-btn">기억하는 이야기</a>
           </div>
         </div>
+        <div class="mother-scroll">천천히 아래로 내려보세요 <span>↓</span></div>
       </section>
 
       <section class="family-note">
@@ -65,11 +65,11 @@ requireFamilyAuth((member) => {
         <div class="story-line"></div>
         <p class="story-kicker">우리에게 남은 것</p>
         <h2 class="serif">사진 한 장이면<br>그날의 공기까지 떠오를 때가 있습니다.</h2>
-        <p>여행지에서 나란히 서 있던 모습, 정장을 차려입고 함께 찍은 사진, 평범했던 어느 날의 표정까지. 이곳은 슬픔만을 남기는 곳이 아니라, 두 분이 살아오신 시간을 가족이 다시 함께 보는 공간이었으면 합니다.</p>
+        <p>여행지에서 나란히 서 있던 모습, 특별한 날의 표정, 평범했던 어느 날의 모습까지. 이곳은 슬픔만을 남기는 곳이 아니라, 가족이 함께 살아온 시간을 다시 꺼내보는 공간이었으면 합니다.</p>
       </section>
 
       <section class="family-footer-note">
-        <p>${member.name}님, 오늘은 어떤 사진부터 꺼내볼까요?</p>
+        <p>${member.name}님, 오늘은 어떤 기억부터 꺼내볼까요?</p>
         <button class="logout text-logout" onclick="logout()">로그아웃</button>
       </section>
     </main>
