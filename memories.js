@@ -29,6 +29,18 @@ async function loadMemories() {
     .order('created_at', { ascending: false });
 
   const list = document.getElementById('mm-list');
+
+  // ── 임시 진단 표시 ──
+  try {
+    const { data: s } = await supabaseClient.auth.getSession();
+    const em = s && s.session ? s.session.user.email : '(로그인 없음)';
+    const diag = document.createElement('p');
+    diag.style.cssText = 'font-size:12px;color:#999;';
+    diag.textContent = '[진단] 로그인: ' + em + ' / 조회결과: ' + (error ? 'ERROR ' + JSON.stringify(error) : (data ? data.length + '건' : 'null'));
+    list.parentNode.insertBefore(diag, list);
+  } catch(e) {}
+  // ────────────────────
+
   if (error) {
     list.innerHTML = '<p class="empty">오류: ' + escapeHtml(error.message) + '</p>';
     return;
