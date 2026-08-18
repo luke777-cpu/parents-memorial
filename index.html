@@ -26,9 +26,9 @@
     height:100%;
     display:block;
     object-fit:cover;
-    object-position:center 42%;
-    filter:grayscale(1) contrast(.94) brightness(1.04);
-    transform:scale(1.01);
+    object-position:center center;
+    filter:contrast(1.02) brightness(1.03);
+    transform:scale(1.005);
   }
   .mother-hero-overlay {
     position:absolute;
@@ -36,8 +36,8 @@
     z-index:1;
     pointer-events:none;
     background:
-      linear-gradient(90deg, rgba(250,247,240,.88) 0%, rgba(250,247,240,.68) 33%, rgba(250,247,240,.20) 62%, rgba(250,247,240,.04) 100%),
-      linear-gradient(0deg, rgba(246,241,233,.18), rgba(255,255,255,.01) 45%);
+      linear-gradient(90deg, rgba(250,247,240,.86) 0%, rgba(250,247,240,.64) 32%, rgba(250,247,240,.16) 60%, rgba(250,247,240,.02) 100%),
+      linear-gradient(0deg, rgba(246,241,233,.12), rgba(255,255,255,0) 45%);
   }
   .mother-hero-content {
     position:relative;
@@ -92,12 +92,12 @@
     .family-home { padding:0 0 96px; }
     .mother-hero { min-height:78vh; align-items:flex-end; }
     .mother-hero-photo img {
-      object-position:62% center;
-      filter:grayscale(1) contrast(.92) brightness(1.06);
+      object-position:67% center;
+      filter:contrast(1.01) brightness(1.04);
     }
     .mother-hero-overlay {
       background:
-        linear-gradient(0deg, rgba(249,246,239,.94) 0%, rgba(249,246,239,.72) 36%, rgba(249,246,239,.16) 68%, rgba(249,246,239,.02) 100%);
+        linear-gradient(0deg, rgba(249,246,239,.93) 0%, rgba(249,246,239,.70) 35%, rgba(249,246,239,.14) 68%, rgba(249,246,239,.01) 100%);
     }
     .mother-hero-content {
       width:calc(100% - 36px);
@@ -128,7 +128,7 @@ requireFamilyAuth((member) => {
     <main class="family-home">
       <section class="mother-hero">
         <div class="mother-hero-photo" aria-hidden="true">
-          <img src="assets/mother-memory.svg?v=2" alt="">
+          <img src="assets/mother-hero-final.png?v=1" alt="">
         </div>
         <div class="mother-hero-overlay" aria-hidden="true"></div>
         <div class="mother-hero-content">
