@@ -1,1 +1,0 @@
-Father timeline image assets are generated from family photographs supplied by the site owner.
