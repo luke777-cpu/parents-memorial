@@ -58,6 +58,8 @@ document.getElementById('startBtn').addEventListener('click', async () => {
     return;
   }
   log('로그인 성공: ' + signInData.user.email, 'ok');
+  const { data: sessionCheck } = await sb.auth.getSession();
+  log('세션 확인: role=' + (sessionCheck.session ? 'authenticated' : '없음') + ', access_token 존재=' + !!(sessionCheck.session && sessionCheck.session.access_token), 'info');
 
   const manifest = await (await fetch(MANIFEST_URL)).json();
   const albumNames = Object.keys(manifest);
@@ -73,7 +75,10 @@ document.getElementById('startBtn').addEventListener('click', async () => {
   for(const name of albumNames){
     if(!albumIdByName[name]){
       const { data: newAlb, error: createErr } = await sb.from('albums').insert({ name }).select().single();
-      if(createErr){ log('앨범 생성 실패 (' + name + '): ' + createErr.message, 'err'); continue; }
+      if(createErr){
+        log('앨범 생성 실패 (' + name + '): ' + createErr.message + ' | code=' + createErr.code + ' | details=' + createErr.details + ' | hint=' + createErr.hint, 'err');
+        continue;
+      }
       albumIdByName[name] = newAlb.id;
       log('앨범 생성됨: ' + name, 'ok');
     } else {
@@ -102,7 +107,10 @@ document.getElementById('startBtn').addEventListener('click', async () => {
           url: pub.publicUrl,
           caption: ''
         });
-        if(insErr) throw insErr;
+        if(insErr){
+          insErr.message = insErr.message + ' | code=' + insErr.code + ' | details=' + insErr.details + ' | hint=' + insErr.hint;
+          throw insErr;
+        }
         done++;
         log(`[${done}/${total}] ${albumName} <- ${filename} OK`, 'ok');
       }catch(e){
