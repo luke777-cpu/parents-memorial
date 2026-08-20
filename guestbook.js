@@ -79,13 +79,13 @@ async function saveEditGuestbook(id) {
     try {
       update.image_url = await uploadPhoto(fileInput.files[0], 'guestbook');
     } catch (e) {
-      alert('사진 업로드 중 오류가 발생했습니다.');
+      alert('사진 업로드 오류: ' + (e && e.message ? e.message : JSON.stringify(e)));
       return;
     }
   }
   const { error } = await supabaseClient.from('guestbook').update(update).eq('id', id);
   if (error) {
-    alert('수정 중 오류가 발생했습니다.');
+    alert('수정 오류: ' + error.message + (error.details ? ' / ' + error.details : ''));
     return;
   }
   await loadGuestbook();
@@ -100,7 +100,7 @@ async function addEntry() {
     try {
       image_url = await uploadPhoto(fileInput.files[0], 'guestbook');
     } catch (e) {
-      alert('사진 업로드 중 오류가 발생했습니다.');
+      alert('사진 업로드 오류: ' + (e && e.message ? e.message : JSON.stringify(e)));
       return;
     }
   }
@@ -110,7 +110,7 @@ async function addEntry() {
     message, image_url
   });
   if (error) {
-    alert('저장 중 오류가 발생했습니다.');
+    alert('저장 오류: ' + error.message + (error.details ? ' / ' + error.details : ''));
     return;
   }
   document.getElementById('gb-message').value = '';
