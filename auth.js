@@ -110,6 +110,67 @@ function compressToWebP(file, maxWidth = 1600, quality = 0.82) {
   });
 }
 
+// ── 사진 선택 위젯 (최대 2장, 썸네일 미리보기 + 개별 삭제) ──
+window._photoPickers = window._photoPickers || {};
+
+function createPhotoPicker(containerId, initialUrls) {
+  window._photoPickers[containerId] = {
+    kept: (initialUrls || []).slice(0, 2),
+    files: []
+  };
+  renderPhotoPicker(containerId);
+}
+
+function renderPhotoPicker(containerId) {
+  const picker = window._photoPickers[containerId];
+  const el = document.getElementById(containerId);
+  if (!picker || !el) return;
+  const total = picker.kept.length + picker.files.length;
+  let html = '<div class="photo-picker">';
+  picker.kept.forEach((url, i) => {
+    html += `<div class="photo-thumb"><img src="${url}"><button type="button" onclick="removePickerKept('${containerId}',${i})">&times;</button></div>`;
+  });
+  picker.files.forEach((file, i) => {
+    html += `<div class="photo-thumb"><img src="${URL.createObjectURL(file)}"><button type="button" onclick="removePickerNew('${containerId}',${i})">&times;</button></div>`;
+  });
+  if (total < 2) {
+    html += `<label class="photo-add-btn" for="${containerId}-file">+ 사진</label><input type="file" id="${containerId}-file" accept="image/*" style="display:none">`;
+  }
+  html += '</div>';
+  el.innerHTML = html;
+  const fileInput = document.getElementById(containerId + '-file');
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      const f = e.target.files[0];
+      if (f) {
+        window._photoPickers[containerId].files.push(f);
+        renderPhotoPicker(containerId);
+      }
+      fileInput.value = '';
+    });
+  }
+}
+
+function removePickerKept(containerId, i) {
+  window._photoPickers[containerId].kept.splice(i, 1);
+  renderPhotoPicker(containerId);
+}
+function removePickerNew(containerId, i) {
+  window._photoPickers[containerId].files.splice(i, 1);
+  renderPhotoPicker(containerId);
+}
+
+// 위젯 상태를 실제 업로드까지 마치고 최종 URL 배열로 반환
+async function resolvePhotoPicker(containerId, pathPrefix) {
+  const picker = window._photoPickers[containerId];
+  if (!picker) return [];
+  const uploaded = [];
+  for (const file of picker.files) {
+    uploaded.push(await uploadPhoto(file, pathPrefix));
+  }
+  return [...picker.kept, ...uploaded];
+}
+
 function navHtml(active) {
   const items = [
     ['index.html', '홈'],
