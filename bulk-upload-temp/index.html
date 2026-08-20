@@ -90,6 +90,7 @@ document.getElementById('startBtn').addEventListener('click', async () => {
   const total = Object.values(manifest).flat().length;
 
   for(const [albumName, files] of Object.entries(manifest)){
+    if(albumName === '여행'){ log('여행 앨범은 이미 완료되어 건너뜀', 'info'); done += files.length; continue; }
     const albumId = albumIdByName[albumName];
     if(!albumId){ log('앨범ID 없음, 스킵: ' + albumName, 'err'); continue; }
     for(const filename of files){
