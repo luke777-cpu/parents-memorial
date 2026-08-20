@@ -54,13 +54,55 @@ async function openAlbumView(albumId, albumName) {
       </div>
       <div id="gl-grid" class="photo-grid">
         ${(photos && photos.length)
-          ? photos.map(p => `<img src="${p.url}" title="${escapeHtml(p.caption || '')}">`).join('')
+          ? photos.map((p, i) => `<img src="${p.url}" title="${escapeHtml(p.caption || '')}" onclick="openLightbox(${i})">`).join('')
           : '<p class="empty">아직 이 앨범에 사진이 없습니다.</p>'}
       </div>
     </div>
   `;
+  window._lbPhotos = photos || [];
   document.getElementById('gl-submit').addEventListener('click', () => addPhoto(albumId, albumName));
 }
+
+let _lbIndex = 0;
+function openLightbox(index) {
+  _lbIndex = index;
+  renderLightbox();
+}
+function renderLightbox() {
+  const photos = window._lbPhotos || [];
+  if (!photos.length) return;
+  const p = photos[_lbIndex];
+  let el = document.getElementById('lb-overlay');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'lb-overlay';
+    el.className = 'lightbox-overlay';
+    document.body.appendChild(el);
+  }
+  el.innerHTML = `
+    <button class="lb-close" onclick="closeLightbox()">&times;</button>
+    ${photos.length > 1 ? '<button class="lb-nav lb-prev" onclick="lbMove(-1)">&#8249;</button>' : ''}
+    <img src="${p.url}">
+    ${photos.length > 1 ? '<button class="lb-nav lb-next" onclick="lbMove(1)">&#8250;</button>' : ''}
+    ${p.caption ? `<div class="lb-caption">${escapeHtml(p.caption)}</div>` : ''}
+  `;
+  el.onclick = (e) => { if (e.target === el) closeLightbox(); };
+}
+function lbMove(dir) {
+  const photos = window._lbPhotos || [];
+  _lbIndex = (_lbIndex + dir + photos.length) % photos.length;
+  renderLightbox();
+}
+function closeLightbox() {
+  const el = document.getElementById('lb-overlay');
+  if (el) el.remove();
+}
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('lb-overlay')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbMove(-1);
+  if (e.key === 'ArrowRight') lbMove(1);
+});
 
 async function addPhoto(albumId, albumName) {
   const fileInput = document.getElementById('gl-photo');
