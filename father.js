@@ -59,7 +59,7 @@ requireFamilyAuth((member) => {
           <div class="tl-title">미군 군무원</div>
           <div class="tl-body">아버지는 미군 관련 군무원으로 일한 시기가 있었다. 가족에게 전해지는 이야기로는 시험에서 1등을 했다고 한다. 그러나 전쟁 중 호적 및 신분서류 문제로 정식 군무원이 될 기회를 놓쳤다고 전해진다.
           <span class="father-note">※ 이 내용은 확정된 행정기록이 아니라 가족에게 전해지는 이야기입니다.</span></div>
-          ${photo('nagasaki.webp', '미군 군무원으로 일하던 시절의 사진. 뒤편에 ‘NAGASAKI DETACHMENT’라는 글자가 남아 있다.', false, true)}
+          ${photo('nagasaki.webp', '미군 군무원으로 일하던 시절의 사진. 뒤편에 ‘AKASAKI DETACHMENT’라는 글자가 남아 있다.', false, true)}
         </div>
 
         <div class="tl-item">
