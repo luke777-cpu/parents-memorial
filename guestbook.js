@@ -58,9 +58,19 @@ function renderGuestbookCard(g) {
       ${imgs.length ? `<div class="post-images">${imgs.map(u => `<img src="${u}">`).join('')}</div>` : ''}
       <div class="tl-body">${escapeHtml(g.message)}</div>
       <div class="meta">${escapeHtml(g.author_name)} · ${new Date(g.created_at).toLocaleDateString('ko-KR')}${editedLabel}</div>
-      ${canEdit ? `<div class="post-actions" style="margin-top:8px;"><button class="btn-link" onclick="startEditGuestbook('${g.id}')">수정</button></div>` : ''}
+      ${canEdit ? `<div class="post-actions" style="margin-top:8px;"><button class="btn-link" onclick="startEditGuestbook('${g.id}')">수정</button><button class="btn-link" style="margin-left:12px;color:#b04a4a;" onclick="deleteGuestbook('${g.id}')">삭제</button></div>` : ''}
     </div>
   `;
+}
+
+async function deleteGuestbook(id) {
+  if (!confirm('이 글을 삭제할까요? 되돌릴 수 없습니다.')) return;
+  const { error } = await supabaseClient.from('guestbook').delete().eq('id', id);
+  if (error) {
+    alert('삭제 오류: ' + error.message + (error.details ? ' / ' + error.details : ''));
+    return;
+  }
+  await loadGuestbook();
 }
 
 function startEditGuestbook(id) {

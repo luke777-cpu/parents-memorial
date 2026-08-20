@@ -62,9 +62,19 @@ function renderMemoryCard(m) {
       ${imgs.length ? `<div class="post-images">${imgs.map(u => `<img src="${u}">`).join('')}</div>` : ''}
       <div class="tl-body" style="white-space:pre-wrap;">${escapeHtml(m.body)}</div>
       <div class="meta">${escapeHtml(m.author_name)} · ${new Date(m.created_at).toLocaleDateString('ko-KR')}${editedLabel}</div>
-      ${canEdit ? `<div class="post-actions" style="margin-top:8px;"><button class="btn-link" onclick="startEditMemory('${m.id}')">수정</button></div>` : ''}
+      ${canEdit ? `<div class="post-actions" style="margin-top:8px;"><button class="btn-link" onclick="startEditMemory('${m.id}')">수정</button><button class="btn-link" style="margin-left:12px;color:#b04a4a;" onclick="deleteMemory('${m.id}')">삭제</button></div>` : ''}
     </div>
   `;
+}
+
+async function deleteMemory(id) {
+  if (!confirm('이 글을 삭제할까요? 되돌릴 수 없습니다.')) return;
+  const { error } = await supabaseClient.from('memories').delete().eq('id', id);
+  if (error) {
+    alert('삭제 오류: ' + error.message + (error.details ? ' / ' + error.details : ''));
+    return;
+  }
+  await loadMemories();
 }
 
 function startEditMemory(id) {
