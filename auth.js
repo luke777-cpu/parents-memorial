@@ -113,10 +113,11 @@ function compressToWebP(file, maxWidth = 1600, quality = 0.82) {
 // ── 사진 선택 위젯 (최대 2장, 썸네일 미리보기 + 개별 삭제) ──
 window._photoPickers = window._photoPickers || {};
 
-function createPhotoPicker(containerId, initialUrls) {
+function createPhotoPicker(containerId, initialUrls, maxCount) {
   window._photoPickers[containerId] = {
-    kept: (initialUrls || []).slice(0, 2),
-    files: []
+    kept: (initialUrls || []).slice(0, maxCount || 2),
+    files: [],
+    max: maxCount || 2
   };
   renderPhotoPicker(containerId);
 }
@@ -133,7 +134,7 @@ function renderPhotoPicker(containerId) {
   picker.files.forEach((file, i) => {
     html += `<div class="photo-thumb"><img src="${URL.createObjectURL(file)}"><button type="button" onclick="removePickerNew('${containerId}',${i})">&times;</button></div>`;
   });
-  if (total < 2) {
+  if (total < picker.max) {
     html += `<label class="photo-add-btn" for="${containerId}-file">+ 사진</label><input type="file" id="${containerId}-file" accept="image/*" style="display:none">`;
   }
   html += '</div>';

@@ -12,15 +12,19 @@ function renderShell() {
     <div class="wrap">
       <h1 class="serif" style="margin-top:40px; font-size:22px;">생애 타임라인</h1>
       <div class="form-block card">
-        <input id="tl-year" type="number" placeholder="연도 (예: 1990)">
-        <input id="tl-title" type="text" placeholder="제목">
+        <p class="form-head">기록 추가하기</p>
+        <div class="form-row">
+          <input id="tl-year" type="number" placeholder="연도 (예: 1990)" class="field-year">
+          <input id="tl-title" type="text" placeholder="제목">
+        </div>
         <textarea id="tl-body" placeholder="이야기를 적어주세요"></textarea>
-        <input id="tl-photo" type="file" accept="image/*">
+        <div id="tl-photo-picker"></div>
         <div class="form-foot"><button class="btn" id="tl-submit">기록 추가</button></div>
       </div>
       <div id="tl-list" class="timeline"></div>
     </div>
   `;
+  createPhotoPicker('tl-photo-picker', [], 1);
   document.getElementById('tl-submit').addEventListener('click', addEvent);
 }
 
@@ -54,7 +58,6 @@ async function addEvent() {
   const year = parseInt(document.getElementById('tl-year').value, 10);
   const title = document.getElementById('tl-title').value.trim();
   const body = document.getElementById('tl-body').value.trim();
-  const fileInput = document.getElementById('tl-photo');
 
   if (!year || !title) {
     alert('연도와 제목은 필수입니다.');
@@ -62,8 +65,12 @@ async function addEvent() {
   }
 
   let photo_url = null;
-  if (fileInput.files[0]) {
-    photo_url = await uploadPhoto(fileInput.files[0], 'timeline');
+  try {
+    const urls = await resolvePhotoPicker('tl-photo-picker', 'timeline');
+    photo_url = urls[0] || null;
+  } catch (e) {
+    alert('사진 업로드 오류: ' + (e && e.message ? e.message : JSON.stringify(e)));
+    return;
   }
 
   const { error } = await supabaseClient.from('timeline_events').insert({
@@ -72,13 +79,13 @@ async function addEvent() {
   });
 
   if (error) {
-    alert('저장 중 오류가 발생했습니다.');
+    alert('저장 오류: ' + error.message + (error.details ? ' / ' + error.details : ''));
     return;
   }
 
   document.getElementById('tl-year').value = '';
   document.getElementById('tl-title').value = '';
   document.getElementById('tl-body').value = '';
-  fileInput.value = '';
+  createPhotoPicker('tl-photo-picker', [], 1);
   await loadTimeline();
 }

@@ -48,8 +48,9 @@ async function openAlbumView(albumId, albumName) {
       <p style="margin-top:40px;"><a href="#" onclick="renderAlbumList(); return false;" style="color:var(--text-soft); font-size:14px;">← 사진첩</a></p>
       <h1 class="serif" style="font-size:22px;">${albumName}</h1>
       <div class="form-block card">
-        <input id="gl-photo" type="file" accept="image/*">
-        <input id="gl-caption" type="text" placeholder="사진 설명 (선택)">
+        <p class="form-head">사진 올리기</p>
+        <div id="gl-photo-picker"></div>
+        <input id="gl-caption" type="text" placeholder="사진 설명 (선택)" style="margin-top:10px;">
         <div class="form-foot"><button class="btn" id="gl-submit">사진 추가</button></div>
       </div>
       <div id="gl-grid" class="photo-grid">
@@ -60,6 +61,7 @@ async function openAlbumView(albumId, albumName) {
     </div>
   `;
   window._lbPhotos = photos || [];
+  createPhotoPicker('gl-photo-picker', [], 2);
   document.getElementById('gl-submit').addEventListener('click', () => addPhoto(albumId, albumName));
 }
 
@@ -105,20 +107,26 @@ document.addEventListener('keydown', (e) => {
 });
 
 async function addPhoto(albumId, albumName) {
-  const fileInput = document.getElementById('gl-photo');
   const caption = document.getElementById('gl-caption').value.trim();
-  if (!fileInput.files[0]) {
+  let urls;
+  try {
+    urls = await resolvePhotoPicker('gl-photo-picker', 'gallery');
+  } catch (e) {
+    alert('사진 업로드 오류: ' + (e && e.message ? e.message : JSON.stringify(e)));
+    return;
+  }
+  if (!urls.length) {
     alert('사진을 선택해주세요.');
     return;
   }
-  const url = await uploadPhoto(fileInput.files[0], 'gallery');
-  const { error } = await supabaseClient.from('photos').insert({
+  const rows = urls.map(url => ({
     album_id: albumId,
     author_email: currentMember.email,
     url, caption
-  });
+  }));
+  const { error } = await supabaseClient.from('photos').insert(rows);
   if (error) {
-    alert('업로드 중 오류가 발생했습니다.');
+    alert('업로드 오류: ' + error.message + (error.details ? ' / ' + error.details : ''));
     return;
   }
   await openAlbumView(albumId, albumName);
