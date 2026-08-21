@@ -26,8 +26,7 @@
     height:100%;
     display:block;
     object-fit:cover;
-    object-position:center center;
-    filter:contrast(1.02) brightness(1.03);
+    object-position:0% 30%;
     transform:scale(1.005);
   }
   .mother-hero-overlay {
@@ -36,8 +35,8 @@
     z-index:1;
     pointer-events:none;
     background:
-      linear-gradient(90deg, rgba(250,247,240,.86) 0%, rgba(250,247,240,.64) 32%, rgba(250,247,240,.16) 60%, rgba(250,247,240,.02) 100%),
-      linear-gradient(0deg, rgba(246,241,233,.12), rgba(255,255,255,0) 45%);
+      linear-gradient(90deg, rgba(250,247,240,.84) 0%, rgba(250,247,240,.52) 24%, rgba(250,247,240,.10) 42%, rgba(250,247,240,0) 54%),
+      linear-gradient(0deg, rgba(246,241,233,.16), rgba(255,255,255,0) 30%);
   }
   .mother-hero-content {
     position:relative;
@@ -46,7 +45,7 @@
     margin:0 auto;
     padding:90px 0 110px;
   }
-  .mother-hero-content > * { max-width:560px; }
+  .mother-hero-content > * { max-width:430px; }
   .mother-kicker {
     margin:0 0 18px;
     color:#66765a;
@@ -136,12 +135,11 @@
     .family-home { padding:0 0 96px; }
     .mother-hero { min-height:78vh; align-items:flex-end; }
     .mother-hero-photo img {
-      object-position:67% center;
-      filter:contrast(1.01) brightness(1.04);
+      object-position:66% 20%;
     }
     .mother-hero-overlay {
       background:
-        linear-gradient(0deg, rgba(249,246,239,.93) 0%, rgba(249,246,239,.70) 35%, rgba(249,246,239,.14) 68%, rgba(249,246,239,.01) 100%);
+        linear-gradient(0deg, rgba(249,246,239,.95) 0%, rgba(249,246,239,.82) 28%, rgba(249,246,239,.45) 52%, rgba(249,246,239,.08) 72%, rgba(249,246,239,0) 84%);
     }
     .mother-hero-content {
       width:calc(100% - 36px);
@@ -176,7 +174,7 @@ requireFamilyAuth((member) => {
     <main class="family-home">
       <section class="mother-hero">
         <div class="mother-hero-photo" aria-hidden="true">
-          <img src="assets/mother-hero-final.png?v=1" alt="">
+          <img src="assets/parents-hero.webp?v=1" alt="">
         </div>
         <div class="mother-hero-overlay" aria-hidden="true"></div>
         <div class="mother-hero-content">
