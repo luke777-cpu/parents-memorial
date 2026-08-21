@@ -50,7 +50,7 @@ async function openAlbumView(albumId, albumName) {
       <div class="form-block card">
         <input id="gl-photo" type="file" accept="image/*">
         <input id="gl-caption" type="text" placeholder="사진 설명 (선택)">
-        <button class="btn" id="gl-submit" style="margin-top:8px;">사진 추가</button>
+        <div class="form-foot"><button class="btn" id="gl-submit">사진 추가</button></div>
       </div>
       <div id="gl-grid" class="photo-grid">
         ${(photos && photos.length)

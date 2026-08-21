@@ -16,7 +16,7 @@ function renderShell() {
         <input id="tl-title" type="text" placeholder="제목">
         <textarea id="tl-body" placeholder="이야기를 적어주세요"></textarea>
         <input id="tl-photo" type="file" accept="image/*">
-        <button class="btn" id="tl-submit" style="margin-top:8px;">기록 추가</button>
+        <div class="form-foot"><button class="btn" id="tl-submit">기록 추가</button></div>
       </div>
       <div id="tl-list" class="timeline"></div>
     </div>

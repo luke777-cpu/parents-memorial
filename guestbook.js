@@ -13,9 +13,12 @@ function renderShell() {
     <div class="wrap">
       <h1 class="serif" style="margin-top:40px; font-size:22px;">방명록</h1>
       <div class="form-block card">
+        <p class="form-head">한마디 남기기</p>
         <textarea id="gb-message" placeholder="짧은 인사를 남겨주세요"></textarea>
         <div id="gb-photo-picker"></div>
-        <button class="btn" id="gb-submit" style="margin-top:12px;">남기기</button>
+        <div class="form-foot">
+          <button class="btn" id="gb-submit">남기기</button>
+        </div>
       </div>
       <div id="gb-list"></div>
     </div>
@@ -57,8 +60,10 @@ function renderGuestbookCard(g) {
     <div class="post card" id="gb-card-${g.id}" style="margin-bottom:12px;">
       ${imgs.length ? `<div class="post-images">${imgs.map(u => `<img src="${u}">`).join('')}</div>` : ''}
       <div class="tl-body">${escapeHtml(g.message)}</div>
-      <div class="meta">${escapeHtml(g.author_name)} · ${new Date(g.created_at).toLocaleDateString('ko-KR')}${editedLabel}</div>
-      ${canEdit ? `<div class="post-actions" style="margin-top:8px;"><button class="btn-link" onclick="startEditGuestbook('${g.id}')">수정</button><button class="btn-link" style="margin-left:12px;color:#b04a4a;" onclick="deleteGuestbook('${g.id}')">삭제</button></div>` : ''}
+      <div class="post-foot">
+        <div class="meta">${escapeHtml(g.author_name)} · ${new Date(g.created_at).toLocaleDateString('ko-KR')}${editedLabel}</div>
+        ${canEdit ? `<div class="post-actions"><button class="btn-text" onclick="startEditGuestbook('${g.id}')">수정</button><button class="btn-text danger" onclick="deleteGuestbook('${g.id}')">삭제</button></div>` : ''}
+      </div>
     </div>
   `;
 }
@@ -78,12 +83,14 @@ function startEditGuestbook(id) {
   if (!g) return;
   const pickerId = 'gb-edit-photo-picker-' + id;
   const card = document.getElementById('gb-card-' + id);
+  card.classList.add('form-block');
   card.innerHTML = `
-    <textarea id="gb-edit-message-${id}" style="width:100%;min-height:80px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;">${escapeHtml(g.message)}</textarea>
+    <p class="form-head">글 수정</p>
+    <textarea id="gb-edit-message-${id}">${escapeHtml(g.message)}</textarea>
     <div id="${pickerId}"></div>
-    <div style="margin-top:10px;">
-      <button class="btn" style="width:auto;padding:10px 18px;" onclick="saveEditGuestbook('${id}')">저장</button>
-      <button class="btn-link" style="margin-left:10px;" onclick="loadGuestbook()">취소</button>
+    <div class="form-foot">
+      <button class="btn-quiet" onclick="loadGuestbook()">취소</button>
+      <button class="btn" onclick="saveEditGuestbook('${id}')">저장</button>
     </div>
   `;
   createPhotoPicker(pickerId, guestbookImages(g));

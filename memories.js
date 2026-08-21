@@ -13,10 +13,13 @@ function renderShell() {
     <div class="wrap">
       <h1 class="serif" style="margin-top:40px; font-size:22px;">추모의 글</h1>
       <div class="form-block card">
+        <p class="form-head">새 글 쓰기</p>
         <input id="mm-title" type="text" placeholder="제목">
         <textarea id="mm-body" placeholder="마음을 담아 적어주세요"></textarea>
         <div id="mm-photo-picker"></div>
-        <button class="btn" id="mm-submit" style="margin-top:12px;">글 남기기</button>
+        <div class="form-foot">
+          <button class="btn" id="mm-submit">글 남기기</button>
+        </div>
       </div>
       <div id="mm-list"></div>
     </div>
@@ -61,8 +64,10 @@ function renderMemoryCard(m) {
       <div class="tl-title">${escapeHtml(m.title)}</div>
       ${imgs.length ? `<div class="post-images">${imgs.map(u => `<img src="${u}">`).join('')}</div>` : ''}
       <div class="tl-body" style="white-space:pre-wrap;">${escapeHtml(m.body)}</div>
-      <div class="meta">${escapeHtml(m.author_name)} · ${new Date(m.created_at).toLocaleDateString('ko-KR')}${editedLabel}</div>
-      ${canEdit ? `<div class="post-actions" style="margin-top:8px;"><button class="btn-link" onclick="startEditMemory('${m.id}')">수정</button><button class="btn-link" style="margin-left:12px;color:#b04a4a;" onclick="deleteMemory('${m.id}')">삭제</button></div>` : ''}
+      <div class="post-foot">
+        <div class="meta">${escapeHtml(m.author_name)} · ${new Date(m.created_at).toLocaleDateString('ko-KR')}${editedLabel}</div>
+        ${canEdit ? `<div class="post-actions"><button class="btn-text" onclick="startEditMemory('${m.id}')">수정</button><button class="btn-text danger" onclick="deleteMemory('${m.id}')">삭제</button></div>` : ''}
+      </div>
     </div>
   `;
 }
@@ -82,13 +87,15 @@ function startEditMemory(id) {
   if (!m) return;
   const pickerId = 'mm-edit-photo-picker-' + id;
   const card = document.getElementById('mm-card-' + id);
+  card.classList.add('form-block');
   card.innerHTML = `
-    <input id="mm-edit-title-${id}" type="text" value="${escapeHtml(m.title)}" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;margin-bottom:8px;">
-    <textarea id="mm-edit-body-${id}" style="width:100%;min-height:100px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;">${escapeHtml(m.body)}</textarea>
+    <p class="form-head">글 수정</p>
+    <input id="mm-edit-title-${id}" type="text" value="${escapeHtml(m.title)}">
+    <textarea id="mm-edit-body-${id}">${escapeHtml(m.body)}</textarea>
     <div id="${pickerId}"></div>
-    <div style="margin-top:10px;">
-      <button class="btn" style="width:auto;padding:10px 18px;" onclick="saveEditMemory('${id}')">저장</button>
-      <button class="btn-link" style="margin-left:10px;" onclick="loadMemories()">취소</button>
+    <div class="form-foot">
+      <button class="btn-quiet" onclick="loadMemories()">취소</button>
+      <button class="btn" onclick="saveEditMemory('${id}')">저장</button>
     </div>
   `;
   createPhotoPicker(pickerId, memoryImages(m));
